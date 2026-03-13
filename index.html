@@ -32,8 +32,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 16px; min-width: 0; }
 .stbtn { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 6px 2px; cursor: pointer; text-align: center; min-height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; position: relative; transition: all .15s; box-shadow: 0 1px 3px rgba(0,0,0,.05); min-width: 0; overflow: hidden; }
 .stbtn:active { transform: scale(.91); }
-.stbtn .snum { font-size: 10px; color: #cbd5e1; font-weight: 500; line-height: 1; }
-.stbtn .sname { font-size: 19px; font-weight: 800; color: #1e293b; word-break: keep-all; white-space: nowrap; letter-spacing: -1px; line-height: 1.1; }
+.stbtn .snum { font-size: 12px; color: #cbd5e1; font-weight: 600; line-height: 1; }
+.stbtn .sname { font-size: 18px; font-weight: 800; color: #1e293b; word-break: keep-all; white-space: nowrap; letter-spacing: -1px; line-height: 1.1; }
 .stbtn.sel { background: #eff6ff; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,.15); }
 .stbtn.sel .sname { color: #3b82f6; }
 .stbtn.sel .snum { color: #93c5fd; }
@@ -56,16 +56,16 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 칩 그룹 */
 .grp { margin-bottom: 13px; }
-.glabel { font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 7px; }
+.glabel { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 7px; }
 .glabel .req { color: #ef4444; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { padding: 9px 18px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
+.chip { padding: 10px 20px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
 .chip:active { transform: scale(.91); }
 .chip.on-type   { background: #ef4444; border-color: #ef4444; color: #fff; }
 .chip.on-reason { background: #6366f1; border-color: #6366f1; color: #fff; }
 .chip.on-detail { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
-#period-chips .chip { padding: 9px 10px; font-size: 13px; }
+#period-chips .chip { padding: 10px 11px; font-size: 14px; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
 .memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; padding: 9px 11px; resize: none; height: 65px; outline: none; }
@@ -101,7 +101,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .doc-btn:active { transform: scale(.93); }
 .doc-btn.submitted { background: #ecfdf5; border-color: #6ee7b7; color: #10b981; }
 /* 달력 전체제출 완료 — 초록 가득찬 원 */
-.cal-day.all-doc::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #10b981; opacity: .28; pointer-events: none; z-index: 0; }
+.cal-day.all-doc::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #059669; opacity: 1; pointer-events: none; z-index: 0; }
 .cal-day.all-doc { color: #fff !important; }
 .cal-day.all-doc > * { position: relative; z-index: 1; }
 .cal-day.all-doc.picked::before { background: #fff; opacity: .4; }
@@ -587,7 +587,14 @@ function goTab(t) {
     document.getElementById('tab-'+x).className = 'tab'+(x===t?' on':'');
     document.getElementById('page-'+x).className = 'page'+(x===t?' on':'');
   });
-  if (t === 'cal') renderCal();
+  if (t === 'cal') {
+    var today = new Date();
+    calYear  = today.getFullYear();
+    calMonth = today.getMonth();
+    selCalDate = todayStr();
+    renderCal();
+    renderRecDetail(selCalDate);
+  }
 }
 
 // ── 달력 ──
