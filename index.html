@@ -10,17 +10,16 @@
 html { width: 100%; height: 100%; }
 body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e293b; width: 100vw; min-height: 100vh; overflow-x: hidden; }
 
-.hd { background: #fff; padding: 13px 16px 10px; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+.hd { background: #fff; padding: 13px 16px 13px; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
 .hd-row { display: flex; align-items: center; justify-content: space-between; }
 .hd h1 { font-size: 18px; font-weight: 800; }
 .hd h1 em { color: #3b82f6; font-style: normal; }
-.dt-tag { font-size: 11px; color: #3b82f6; background: #eff6ff; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
-.hd-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+.dt-tag { font-size: 15px; color: #3b82f6; background: #eff6ff; padding: 6px 14px; border-radius: 20px; font-weight: 700; }
 .hd-right { display: flex; align-items: center; gap: 8px; }
 .settings-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 2px; line-height: 1; }
 
-.tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 57px; z-index: 99; }
-.tab { flex: 1; padding: 12px 0; text-align: center; font-size: 13px; font-weight: 600; color: #94a3b8; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all .18s; }
+.tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 53px; z-index: 99; }
+.tab { flex: 1; padding: 14px 0; text-align: center; font-size: 16px; font-weight: 600; color: #94a3b8; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all .18s; }
 .tab.on { color: #3b82f6; border-bottom-color: #3b82f6; }
 
 .wrap { padding: 12px; }
@@ -90,7 +89,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .cal-day.empty { cursor: default; }
 .cal-day.today { background: #eff6ff; color: #3b82f6; }
 .cal-day.has-rec::after { content: ''; width: 5px; height: 5px; background: #ef4444; border-radius: 50%; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); }
-.cal-day.picked { background: #3b82f6 !important; color: #fff !important; }
+.cal-day.picked { background: #3b82f6 !important; color: #fff !important; border-radius: 50% !important; }
 .cal-day.picked::after { background: #fff !important; }
 .cal-day.sun { color: #ef4444; }
 .cal-day.sat { color: #3b82f6; }
@@ -174,7 +173,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <button class="settings-btn" onclick="openSettings()" title="설정">⚙️</button>
     </div>
   </div>
-  <div class="hd-sub">담임반 출결 기록</div>
 </div>
 
 <div class="tabs">
