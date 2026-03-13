@@ -32,8 +32,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 16px; min-width: 0; }
 .stbtn { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 6px 2px; cursor: pointer; text-align: center; min-height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; position: relative; transition: all .15s; box-shadow: 0 1px 3px rgba(0,0,0,.05); min-width: 0; overflow: hidden; }
 .stbtn:active { transform: scale(.91); }
-.stbtn .snum { font-size: 9px; color: #cbd5e1; font-weight: 500; line-height: 1; }
-.stbtn .sname { font-size: 14px; font-weight: 800; color: #1e293b; word-break: keep-all; white-space: nowrap; letter-spacing: -1px; line-height: 1.1; }
+.stbtn .snum { font-size: 10px; color: #cbd5e1; font-weight: 500; line-height: 1; }
+.stbtn .sname { font-size: 19px; font-weight: 800; color: #1e293b; word-break: keep-all; white-space: nowrap; letter-spacing: -1px; line-height: 1.1; }
 .stbtn.sel { background: #eff6ff; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,.15); }
 .stbtn.sel .sname { color: #3b82f6; }
 .stbtn.sel .snum { color: #93c5fd; }
@@ -49,23 +49,23 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 날짜 선택 */
 .date-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-.date-label { font-size: 11px; font-weight: 700; color: #64748b; white-space: nowrap; }
-.date-input { flex: 1; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 7px 10px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; outline: none; }
+.date-label { font-size: 15px; font-weight: 700; color: #64748b; white-space: nowrap; }
+.date-input { flex: 1; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 9px 10px; font-size: 16px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; outline: none; }
 .date-input:focus { border-color: #3b82f6; background: #fff; }
-.date-today-btn { padding: 7px 12px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 11px; font-weight: 700; color: #3b82f6; cursor: pointer; white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; }
+.date-today-btn { padding: 9px 15px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; font-weight: 700; color: #3b82f6; cursor: pointer; white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; }
 
 /* 칩 그룹 */
 .grp { margin-bottom: 13px; }
-.glabel { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 7px; }
+.glabel { font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 7px; }
 .glabel .req { color: #ef4444; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
+.chip { padding: 9px 18px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
 .chip:active { transform: scale(.91); }
 .chip.on-type   { background: #ef4444; border-color: #ef4444; color: #fff; }
 .chip.on-reason { background: #6366f1; border-color: #6366f1; color: #fff; }
 .chip.on-detail { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
-#period-chips .chip { padding: 7px 7px; font-size: 11px; }
+#period-chips .chip { padding: 9px 10px; font-size: 13px; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
 .memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; padding: 9px 11px; resize: none; height: 65px; outline: none; }
@@ -85,7 +85,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .cal-days-hd div:first-child { color: #ef4444; }
 .cal-days-hd div:last-child { color: #3b82f6; }
 .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
-.cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; color: #475569; position: relative; transition: all .15s; }
+.cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; color: #475569; position: relative; transition: all .15s; }
 .cal-day:active { transform: scale(.92); }
 .cal-day.empty { cursor: default; }
 .cal-day.today { background: #eff6ff; color: #3b82f6; }
@@ -95,7 +95,16 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .cal-day.sun { color: #ef4444; }
 .cal-day.sat { color: #3b82f6; }
 
-/* 기록 상세 */
+/* 서류제출 */
+.rec-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; padding-top: 8px; border-top: 1px solid #f1f5f9; }
+.doc-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #94a3b8; font-family: 'Noto Sans KR', sans-serif; transition: all .16s; }
+.doc-btn:active { transform: scale(.93); }
+.doc-btn.submitted { background: #ecfdf5; border-color: #6ee7b7; color: #10b981; }
+/* 달력 전체제출 완료 — 초록 가득찬 원 */
+.cal-day.all-doc::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #10b981; opacity: .28; pointer-events: none; z-index: 0; }
+.cal-day.all-doc { color: #fff !important; }
+.cal-day.all-doc > * { position: relative; z-index: 1; }
+.cal-day.all-doc.picked::before { background: #fff; opacity: .4; }
 .rec-detail { margin-top: 14px; }
 .rec-date-title { font-size: 15px; font-weight: 700; color: #475569; margin-bottom: 10px; }
 .rec-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 11px 13px; margin-bottom: 7px; position: relative; }
@@ -113,16 +122,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .rt-period { background: #fffbeb; color: #f59e0b; }
 .rec-memo { font-size: 14px; color: #64748b; margin-top: 7px; font-weight: 500; }
 .empty-msg { text-align: center; color: #94a3b8; font-size: 13px; padding: 30px 0; }
-
-/* 서류제출 */
-.rec-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; padding-top: 8px; border-top: 1px solid #f1f5f9; }
-.doc-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #94a3b8; font-family: 'Noto Sans KR', sans-serif; transition: all .16s; }
-.doc-btn:active { transform: scale(.93); }
-.doc-btn.submitted { background: #ecfdf5; border-color: #6ee7b7; color: #10b981; }
-/* 달력 전체제출 완료 원 */
-.cal-day.all-doc { position: relative; }
-.cal-day.all-doc::before { content: ''; position: absolute; inset: 2px; border-radius: 50%; border: 2px solid #10b981; pointer-events: none; z-index: 1; }
-.cal-day.all-doc.picked::before { border-color: #fff; }
 
 /* 설정 패널 */
 .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; display: none; }
@@ -637,7 +636,7 @@ function buildCalGrid() {
       }
     }
     if (selCalDate === ds) cls += ' picked';
-    html += '<div class="'+cls+'" onclick="pickCalDate(\''+ds+'\')">'+d+'</div>';
+    html += '<div class="'+cls+'" onclick="pickCalDate(\''+ds+'\')"><span>'+d+'</span></div>';
   }
   document.getElementById('calGrid').innerHTML = html;
 }
