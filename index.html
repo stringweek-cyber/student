@@ -406,6 +406,17 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
   </div>
 </div>
 
+<!-- 생리결석 경고 모달 -->
+<div class="modal-bg" id="periodWarnBg" style="display:none;">
+  <div class="modal">
+    <h3 style="color:#ef4444;">⚠️ 생리결석 중복</h3>
+    <p id="periodWarnMsg" style="line-height:1.7;"></p>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closePeriodWarn()">확인</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toastEl"></div>
 
 <script>
@@ -647,10 +658,34 @@ function doSave() {
 
   var s       = students[selIdx];
   var savedIdx = selIdx;
+  var recordDate = document.getElementById('recordDate').value;
+
+  // ── 생리결석 1달 중복 체크 ──
+  if (detailVal === '생리결석') {
+    var allRecs = lsGet(LS_RECORDS) || [];
+    var newDate = new Date(recordDate);
+    var newYM   = newDate.getFullYear() * 100 + (newDate.getMonth() + 1);
+    var prev = allRecs.find(function(r) {
+      if (r.studentName !== s.name || r.detail !== '생리결석') return false;
+      var rd = new Date(r.date);
+      var rYM = rd.getFullYear() * 100 + (rd.getMonth() + 1);
+      return rYM === newYM;
+    });
+    if (prev) {
+      var pd = prev.date.split('-');
+      var msg = s.name + ' 학생은 ' + parseInt(pd[1]) + '월 ' + parseInt(pd[2]) + '일에 '
+        + '생리결석을 사용하였습니다.\n같은 달에 중복 사용할 수 없습니다.';
+      document.getElementById('periodWarnMsg').textContent = msg;
+      document.getElementById('periodWarnBg').style.display = 'flex';
+      _saving = false;
+      return;
+    }
+  }
+
   var record  = {
     id:          Date.now(),
     time:        nowTimeStr(),
-    date:        document.getElementById('recordDate').value,
+    date:        recordDate,
     studentNum:  s.num,
     studentName: s.name,
     type:        typeVal,
@@ -854,6 +889,10 @@ function toggleDoc(id, ds) {
   renderRecDetail(ds);
   buildCalGrid();
   showToast(docs[id] ? '📄 서류제출 완료 표시' : '서류 미제출로 변경', docs[id] ? 'ok' : '');
+}
+
+function closePeriodWarn() {
+  document.getElementById('periodWarnBg').style.display = 'none';
 }
 
 // ── 삭제 ──
