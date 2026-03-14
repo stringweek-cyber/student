@@ -54,7 +54,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 칩 그룹 */
 .grp { margin-bottom: 13px; }
-.glabel { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 7px; }
+.glabel { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+.glabel svg { flex-shrink: 0; }
 .glabel .req { color: #ef4444; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { padding: 10px 20px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
@@ -65,7 +66,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
 #period-chips { flex-wrap: nowrap; gap: 3px; }
 #period-chips .chip { padding: 9px 6px; font-size: 12px; flex: 1; text-align: center; min-width: 0; }
-#detail-chips .chip { padding: 8px 10px; font-size: 15px; flex: 1; text-align: center; }
+#detail-chips { flex-wrap: nowrap; gap: 4px; }
+#detail-chips .chip { padding: 8px 4px; font-size: 13px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
 .memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; padding: 9px 11px; resize: none; height: 70px; outline: none; }
@@ -161,18 +163,18 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .settings-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #94a3b8; padding: 2px; }
 .settings-body { flex: 1; overflow-y: auto; padding: 16px; }
 .settings-section { margin-bottom: 24px; }
-.settings-section h3 { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 8px; }
-.settings-section p { font-size: 12px; color: #94a3b8; margin-bottom: 10px; line-height: 1.6; }
-.paste-area { width: 100%; height: 120px; border: 1.5px dashed #cbd5e1; border-radius: 10px; padding: 10px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; resize: none; outline: none; }
+.settings-section h3 { font-size: 16px; font-weight: 700; color: #475569; margin-bottom: 10px; }
+.settings-section p { font-size: 14px; color: #94a3b8; margin-bottom: 10px; line-height: 1.6; }
+.paste-area { width: 100%; height: 120px; border: 1.5px dashed #cbd5e1; border-radius: 10px; padding: 10px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; resize: none; outline: none; }
 .paste-area:focus { border-color: #3b82f6; background: #fff; }
 .paste-area::placeholder { color: #cbd5e1; }
 .settings-btn-row { display: flex; gap: 8px; margin-top: 10px; }
-.btn-primary { flex: 1; padding: 10px; background: #3b82f6; border: none; border-radius: 10px; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
-.btn-danger { padding: 10px 14px; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; color: #ef4444; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+.btn-primary { flex: 1; padding: 11px; background: #3b82f6; border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+.btn-danger { padding: 11px 16px; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; color: #ef4444; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
 .student-count-badge { display: inline-flex; align-items: center; gap: 4px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; color: #10b981; margin-top: 8px; }
 
 /* 데이터 관리 */
-.data-btn { width: 100%; padding: 11px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; margin-bottom: 8px; text-align: left; }
+.data-btn { width: 100%; padding: 13px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 15px; font-weight: 600; color: #475569; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; margin-bottom: 8px; text-align: left; }
 .data-btn:active { background: #eff6ff; }
 
 /* 확인 모달 */
@@ -237,7 +239,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
   <!-- 입력 탭 -->
   <div class="page on" id="page-input">
-    <div class="lbl">학생 선택</div>
     <div class="grid" id="studentGrid">
       <div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:20px;font-size:13px;">
         우상단 설정 메뉴에서<br>학생 명단을 등록해 주세요
@@ -260,7 +261,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       </div>
 
       <div class="grp">
-        <div class="glabel">유형</div>
+        <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>유형</div>
         <div class="chips">
           <div class="chip" id="c-type-결석" onclick="pickSingle('type','결석',this)">결석</div>
           <div class="chip" id="c-type-조퇴" onclick="pickSingle('type','조퇴',this)">조퇴</div>
@@ -270,7 +271,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       </div>
 
       <div class="grp">
-        <div class="glabel">사유</div>
+        <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>사유</div>
         <div class="chips">
           <div class="chip" id="c-reason-인정"   onclick="pickSingle('reason','인정',this)">인정</div>
           <div class="chip" id="c-reason-미인정" onclick="pickSingle('reason','미인정',this)">미인정</div>
@@ -280,7 +281,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       </div>
 
       <div class="grp">
-        <div class="glabel">상세</div>
+        <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>상세</div>
         <div class="chips" id="detail-chips">
           <div class="chip" id="c-detail-체험학습" onclick="pickSingle('detail','체험학습',this)">체험학습</div>
           <div class="chip" id="c-detail-생리결석" onclick="pickSingle('detail','생리결석',this)">생리결석</div>
@@ -290,7 +291,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       </div>
 
       <div class="grp">
-        <div class="glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:13px;">(복수 선택 가능)</span></div>
+        <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>교시 <span style="color:#94a3b8;font-weight:500;font-size:13px;">(복수 선택 가능)</span></div>
         <div class="chips" id="period-chips">
           <div class="chip" id="c-period-조례" onclick="pickMulti('period','조례',this)">조례</div>
           <div class="chip" id="c-period-1교시" onclick="pickMulti('period','1교시',this)">1</div>
@@ -306,7 +307,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <div class="divider"></div>
 
       <div class="grp">
-        <div class="glabel">메모</div>
+        <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>메모</div>
         <textarea class="memo-box" id="memoInput" placeholder="추가 메모를 입력하세요."></textarea>
       </div>
 
@@ -359,7 +360,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 ..."></textarea>
       <div id="studentCountBadge"></div>
       <div class="settings-btn-row">
-        <button class="btn-primary" onclick="applyStudents()">✅ 적용</button>
+        <button class="btn-primary" onclick="applyStudents()">적용</button>
         <button class="btn-danger" onclick="clearStudents()">삭제</button>
       </div>
     </div>
@@ -367,8 +368,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
     <div class="settings-section">
       <h3>💾 데이터 관리</h3>
       <p>출결 데이터는 이 기기 브라우저에 저장됩니다.<br>브라우저 데이터 삭제 시 함께 지워질 수 있습니다.</p>
-      <button class="data-btn" onclick="exportCSV()">📤 출결 데이터 CSV로 내보내기</button>
-      <button class="data-btn" onclick="askClearAllRecords()">🗑️ 출결 기록 전체 삭제</button>
+      <button class="data-btn" onclick="exportCSV()">출결 데이터 CSV로 내보내기</button>
+      <button class="data-btn" onclick="askClearAllRecords()">출결 기록 전체 삭제</button>
     </div>
 
   </div>
@@ -455,7 +456,7 @@ function loadStudentsFromStorage() {
 function renderStudentGrid() {
   var g = document.getElementById('studentGrid');
   if (!students.length) {
-    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:20px;font-size:13px;">우상단 ⚙️ 설정에서<br>학생 명단을 등록해 주세요</div>';
+    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:20px;font-size:13px;">우상단 <svg width="13" height="13" viewBox="0 0 22 22" fill="none" style="vertical-align:middle;"><line x1="3" y1="6" x2="19" y2="6" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="11" x2="19" y2="11" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="16" x2="19" y2="16" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg> 설정에서<br>학생 명단을 등록해 주세요</div>';
     return;
   }
   var html = '';
