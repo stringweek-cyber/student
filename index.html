@@ -46,11 +46,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 날짜 선택 */
 .date-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-.date-label { font-size: 22px; line-height: 1; color: #3b82f6; white-space: nowrap; }
-.date-input { flex: 1; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 9px 10px; font-size: 16px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; outline: none; }
+.date-label { font-size: 22px; line-height: 1; color: #3b82f6; white-space: nowrap; flex-shrink: 0; }
+.date-input { width: 0; flex: 1; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 9px 10px; font-size: 16px; font-family: 'Noto Sans KR', sans-serif; color: #1e293b; background: #f8fafc; outline: none; min-width: 0; }
 .date-input:focus { border-color: #3b82f6; background: #fff; }
-.date-today-btn { padding: 9px 15px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; font-weight: 700; color: #3b82f6; cursor: pointer; white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; transition: all .15s; }
-.date-today-btn.hidden { display: none; }
+.date-today-btn { padding: 9px 15px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; font-weight: 700; color: #3b82f6; cursor: pointer; white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; transition: all .15s; flex-shrink: 0; }
+.date-today-btn.hidden { visibility: hidden; pointer-events: none; }
 
 /* 칩 그룹 */
 .grp { margin-bottom: 13px; }
@@ -116,7 +116,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 빨간 점 (출결기록) */
 .cal-day.has-rec .day-inner::after {
-  content: ''; width: 7px; height: 7px;
+  content: ''; width: 5px; height: 5px;
   background: #f87171; border-radius: 50%;
   position: absolute; bottom: 1px; left: 50%;
   transform: translateX(-50%);
@@ -695,7 +695,13 @@ function getRecordDatesInMonth(yearMonth) {
 
 function getRecordsByDate(dateStr) {
   var records = lsGet(LS_RECORDS) || [];
-  return records.filter(function(r) { return r.date === dateStr; });
+  return records
+    .filter(function(r) { return r.date === dateStr; })
+    .sort(function(a, b) {
+      var na = parseInt(a.studentNum) || 0;
+      var nb = parseInt(b.studentNum) || 0;
+      return na - nb;
+    });
 }
 
 function renderCal() {
@@ -738,7 +744,7 @@ function buildCalGrid() {
         var size   = 100;
         var cx     = 50, cy = 50;
         var R      = 44;  // 링 반지름
-        var sw     = 7;   // 링 두께
+        var sw     = 5;   // 링 두께
         var circum = 2 * Math.PI * R;
         var dash   = ratio * circum;
         var gap    = circum - dash;
