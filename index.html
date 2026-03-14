@@ -63,11 +63,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .chip.on-reason { background: #6366f1; border-color: #6366f1; color: #fff; }
 .chip.on-detail { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
-#period-chips .chip { padding: 10px 11px; font-size: 14px; }
-#detail-chips .chip { padding: 8px 10px; font-size: 13px; flex: 1; text-align: center; }
+#period-chips { flex-wrap: nowrap; gap: 3px; }
+#period-chips .chip { padding: 9px 6px; font-size: 12px; flex: 1; text-align: center; min-width: 0; }
+#detail-chips .chip { padding: 8px 10px; font-size: 15px; flex: 1; text-align: center; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
-.memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 16px; padding: 9px 11px; resize: none; height: 70px; outline: none; }
+.memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; padding: 9px 11px; resize: none; height: 70px; outline: none; }
 .memo-box:focus { border-color: #3b82f6; background: #fff; }
 .memo-box::placeholder { color: #cbd5e1; }
 .save-btn { width: 100%; padding: 14px; background: #3b82f6; border: none; border-radius: 12px; color: #fff; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 12px rgba(59,130,246,.3); transition: all .14s; }
@@ -291,13 +292,14 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <div class="grp">
         <div class="glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:13px;">(복수 선택 가능)</span></div>
         <div class="chips" id="period-chips">
-          <div class="chip" id="c-period-1교시" onclick="pickMulti('period','1교시',this)">1교시</div>
-          <div class="chip" id="c-period-2교시" onclick="pickMulti('period','2교시',this)">2교시</div>
-          <div class="chip" id="c-period-3교시" onclick="pickMulti('period','3교시',this)">3교시</div>
-          <div class="chip" id="c-period-4교시" onclick="pickMulti('period','4교시',this)">4교시</div>
-          <div class="chip" id="c-period-5교시" onclick="pickMulti('period','5교시',this)">5교시</div>
-          <div class="chip" id="c-period-6교시" onclick="pickMulti('period','6교시',this)">6교시</div>
-          <div class="chip" id="c-period-7교시" onclick="pickMulti('period','7교시',this)">7교시</div>
+          <div class="chip" id="c-period-조례" onclick="pickMulti('period','조례',this)">조례</div>
+          <div class="chip" id="c-period-1교시" onclick="pickMulti('period','1교시',this)">1</div>
+          <div class="chip" id="c-period-2교시" onclick="pickMulti('period','2교시',this)">2</div>
+          <div class="chip" id="c-period-3교시" onclick="pickMulti('period','3교시',this)">3</div>
+          <div class="chip" id="c-period-4교시" onclick="pickMulti('period','4교시',this)">4</div>
+          <div class="chip" id="c-period-5교시" onclick="pickMulti('period','5교시',this)">5</div>
+          <div class="chip" id="c-period-6교시" onclick="pickMulti('period','6교시',this)">6</div>
+          <div class="chip" id="c-period-7교시" onclick="pickMulti('period','7교시',this)">7</div>
         </div>
       </div>
 
@@ -398,7 +400,7 @@ var chosen      = { type:'', reason:'', detail:'', period:[] };
 var calYear, calMonth, selCalDate = null;
 var pendingAction = null;  // { type: 'deleteRecord'|'clearAll', ... }
 
-var PERIOD_VALS   = ['1교시','2교시','3교시','4교시','5교시','6교시','7교시'];
+var PERIOD_VALS   = ['조례','1교시','2교시','3교시','4교시','5교시','6교시','7교시'];
 var SINGLE_GROUPS = {
   type:   ['결석','조퇴','지각','결과'],
   reason: ['인정','미인정','질병','기타'],
