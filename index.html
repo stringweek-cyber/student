@@ -66,8 +66,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
 #period-chips { flex-wrap: nowrap; gap: 3px; }
 #period-chips .chip { padding: 9px 6px; font-size: 12px; flex: 1; text-align: center; min-width: 0; }
-#detail-chips { flex-wrap: nowrap; gap: 4px; }
-#detail-chips .chip { padding: 8px 4px; font-size: 13px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
+#detail-chips { flex-wrap: nowrap; gap: 3px; }
+#detail-chips .chip { padding: 8px 4px; font-size: 12px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
 .memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; padding: 9px 11px; resize: none; height: 70px; outline: none; }
@@ -303,9 +303,10 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
         <div class="glabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#94a3b8" stroke-width="2"/><path d="M7 12l4 4 6-7" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>상세</div>
         <div class="chips" id="detail-chips">
           <div class="chip" id="c-detail-체험학습" onclick="pickSingle('detail','체험학습',this)">체험학습</div>
+          <div class="chip" id="c-detail-독감" onclick="pickSingle('detail','독감',this)">독감</div>
           <div class="chip" id="c-detail-생리결석" onclick="pickSingle('detail','생리결석',this)">생리결석</div>
-          <div class="chip" id="c-detail-운동부"   onclick="pickSingle('detail','운동부',this)">운동부</div>
-          <div class="chip" id="c-detail-경조사"   onclick="pickSingle('detail','경조사',this)">경조사</div>
+          <div class="chip" id="c-detail-운동부" onclick="pickSingle('detail','운동부',this)">운동부</div>
+          <div class="chip" id="c-detail-경조사" onclick="pickSingle('detail','경조사',this)">경조사</div>
         </div>
       </div>
 
@@ -435,7 +436,7 @@ var PERIOD_VALS   = ['조례','1교시','2교시','3교시','4교시','5교시',
 var SINGLE_GROUPS = {
   type:   ['결석','조퇴','지각','결과'],
   reason: ['인정','미인정','질병','기타'],
-  detail: ['체험학습','생리결석','운동부','경조사']
+  detail: ['체험학습','독감','생리결석','운동부','경조사']
 };
 
 // ── localStorage 헬퍼 ──
