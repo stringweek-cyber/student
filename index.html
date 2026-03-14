@@ -448,6 +448,17 @@ function onDateChange() {
   var btn = document.getElementById('todayBtn');
   if (val === todayStr()) btn.classList.remove('hidden');
   else btn.classList.add('hidden');
+  // 날짜 바뀌면 학생 선택 상태 전체 리셋
+  resetAllStudents();
+}
+
+function resetAllStudents() {
+  for (var i = 0; i < students.length; i++) {
+    var el = document.getElementById('st'+i);
+    if (el) { el.classList.remove('sel'); el.classList.remove('done'); var d = el.querySelector('.sdot'); if(d) d.remove(); }
+  }
+  selIdx = null;
+  resetForm();
 }
 function nowTimeStr() {
   var d = new Date();
@@ -671,13 +682,7 @@ function goTab(t) {
     renderRecDetail(selCalDate);
   }
   if (t === 'input') {
-    // 선택된 학생 리셋
-    if (selIdx !== null) {
-      var prev = document.getElementById('st'+selIdx);
-      if (prev) prev.classList.remove('sel');
-      selIdx = null;
-    }
-    resetForm();
+    resetAllStudents();
   }
 }
 
