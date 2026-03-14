@@ -660,21 +660,23 @@ function doSave() {
   var savedIdx = selIdx;
   var recordDate = document.getElementById('recordDate').value;
 
-  // ── 생리결석 1달 중복 체크 ──
+  // ── 생리결석 30일 중복 체크 ──
   if (detailVal === '생리결석') {
     var allRecs = lsGet(LS_RECORDS) || [];
     var newDate = new Date(recordDate);
-    var newYM   = newDate.getFullYear() * 100 + (newDate.getMonth() + 1);
-    var prev = allRecs.find(function(r) {
-      if (r.studentName !== s.name || r.detail !== '생리결석') return false;
+    var prev = null;
+    var minGap = Infinity;
+    allRecs.forEach(function(r) {
+      if (r.studentName !== s.name || r.detail !== '생리결석') return;
       var rd = new Date(r.date);
-      var rYM = rd.getFullYear() * 100 + (rd.getMonth() + 1);
-      return rYM === newYM;
+      var gap = Math.abs(newDate - rd) / (1000 * 60 * 60 * 24);
+      if (gap < 30 && gap < minGap) { minGap = gap; prev = r; }
     });
     if (prev) {
-      var pd = prev.date.split('-');
-      var msg = s.name + ' 학생은 ' + parseInt(pd[1]) + '월 ' + parseInt(pd[2]) + '일에 '
-        + '생리결석을 사용하였습니다.\n같은 달에 중복 사용할 수 없습니다.';
+      var pd   = prev.date.split('-');
+      var days = Math.floor(Math.abs(newDate - new Date(prev.date)) / (1000 * 60 * 60 * 24));
+      var msg  = s.name + ' 학생은 ' + parseInt(pd[1]) + '월 ' + parseInt(pd[2]) + '일에 생리결석을 사용함.\n'
+               + '사용한 지 ' + days + '일 되어 사용불가!';
       document.getElementById('periodWarnMsg').textContent = msg;
       document.getElementById('periodWarnBg').style.display = 'flex';
       _saving = false;
