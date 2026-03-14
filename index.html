@@ -113,6 +113,16 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .cal-day.today .day-inner { background: #dbeafe; color: #1d4ed8 !important; }
 /* 오늘+선택 */
 .cal-day.today.picked .day-inner { background: #2563eb; color: #fff !important; }
+/* 오늘 배지 */
+.cal-today-badge {
+  position: absolute; top: -1px;
+  background: #2563eb; color: #fff;
+  font-size: 10px; font-weight: 800;
+  padding: 1px 5px; border-radius: 20px;
+  line-height: 1.5; letter-spacing: .2px;
+  white-space: nowrap; z-index: 2;
+}
+.cal-day.picked .cal-today-badge { background: #fff; color: #2563eb; }
 
 /* 빨간 점 (출결기록) */
 .cal-day.has-rec .day-inner::after {
@@ -771,9 +781,10 @@ function buildCalGrid() {
       }
     }
 
+    var todayBadge = isToday ? '<span class="cal-today-badge">오늘</span>' : '';
     html += '<div class="'+cls+'" onclick="pickCalDate(\''+ds+'\')">'
+          + '<div class="day-inner">' + todayBadge + d + '</div>'
           + ringHtml
-          + '<div class="day-inner">'+d+'</div>'
           + '</div>';
   }
   document.getElementById('calGrid').innerHTML = html;
