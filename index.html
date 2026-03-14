@@ -137,21 +137,30 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 /* 서류제출 */
 .rec-detail { margin-top: 14px; }
 .rec-date-title { font-size: 15px; font-weight: 700; color: #475569; margin-bottom: 10px; }
-.rec-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 11px 13px; margin-bottom: 7px; position: relative; }
-.rec-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.rec-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 13px; margin-bottom: 10px; position: relative; }
+.rec-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .rec-name { font-size: 17px; font-weight: 700; }
-.rec-right { display: flex; align-items: center; gap: 8px; }
+.rec-right { display: flex; align-items: center; gap: 10px; }
 .rec-time { font-size: 13px; color: #94a3b8; }
 .del-btn { background: none; border: none; cursor: pointer; font-size: 14px; color: #cbd5e1; padding: 0; line-height: 1; transition: color .15s; }
 .del-btn:hover { color: #ef4444; }
-.rec-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.rec-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
 .rtag { font-size: 14px; padding: 5px 12px; border-radius: 20px; font-weight: 600; }
 .rt-type   { background: #fef2f2; color: #ef4444; }
 .rt-reason { background: #f5f3ff; color: #6366f1; }
 .rt-detail { background: #eff6ff; color: #3b82f6; }
 .rt-period { background: #fffbeb; color: #f59e0b; }
-.rec-memo { font-size: 14px; color: #64748b; margin-top: 7px; font-weight: 500; }
+.rec-memo { font-size: 14px; color: #64748b; margin-bottom: 4px; font-weight: 500; }
 .empty-msg { text-align: center; color: #94a3b8; font-size: 13px; padding: 30px 0; }
+
+/* 서류제출 토글 스위치 */
+.doc-toggle-wrap { display: flex; align-items: center; gap: 7px; cursor: pointer; user-select: none; }
+.doc-toggle-label { font-size: 12px; font-weight: 600; color: #94a3b8; transition: color .2s; white-space: nowrap; }
+.doc-toggle-label.on { color: #10b981; }
+.doc-toggle-track { width: 42px; height: 24px; border-radius: 12px; background: #e2e8f0; position: relative; transition: background .2s; flex-shrink: 0; }
+.doc-toggle-track.on { background: #10b981; }
+.doc-toggle-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: left .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.doc-toggle-track.on .doc-toggle-thumb { left: 21px; }
 
 /* 설정 패널 */
 .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; display: none; }
@@ -537,7 +546,7 @@ function clearStudents() {
 function selectSt(i) {
   if (selIdx !== null) {
     var prev = document.getElementById('st'+selIdx);
-    if (prev && !prev.classList.contains('done')) prev.classList.remove('sel');
+    if (prev) prev.classList.remove('sel');
   }
   if (selIdx === i) { selIdx = null; setBadge(null); resetForm(); return; }
   selIdx = i;
@@ -720,7 +729,7 @@ function buildCalGrid() {
         var size   = 100;
         var cx     = 50, cy = 50;
         var R      = 44;  // 링 반지름
-        var sw     = 4;   // 링 두께
+        var sw     = 7;   // 링 두께
         var circum = 2 * Math.PI * R;
         var dash   = ratio * circum;
         var gap    = circum - dash;
@@ -764,15 +773,19 @@ function renderRecDetail(ds) {
   }
   var allDone = data.every(function(r){ return docs[r.id]; });
   var html = '<div class="rec-date-title">'+title+' ('+data.length+'건)'
-    +(allDone ? ' <span style="display:inline-flex;align-items:center;gap:3px;font-size:12px;color:#10b981;background:#ecfdf5;padding:2px 9px;border-radius:20px;font-weight:700;">📄 서류완료</span>' : '')
+    +(allDone ? ' <span style="display:inline-flex;align-items:center;gap:3px;font-size:12px;color:#10b981;background:#ecfdf5;padding:2px 9px;border-radius:20px;font-weight:700;">서류완료</span>' : '')
     +'</div>';
   data.forEach(function(r) {
-    var tp       = r.time ? r.time.split(' ')[1] || r.time : '';
+    var tp        = r.time ? r.time.split(' ')[1] || r.time : '';
     var submitted = !!docs[r.id];
     html += '<div class="rec-card">'
       + '<div class="rec-top">'
       +   '<div class="rec-name">'+r.studentNum+'번 '+r.studentName+'</div>'
       +   '<div class="rec-right">'
+      +     '<span class="doc-toggle-label'+(submitted?' on':'')+'">'+( submitted?'제출완료':'미제출')+'</span>'
+      +     '<div class="doc-toggle-track'+(submitted?' on':'')+'" onclick="toggleDoc('+r.id+',\''+ds+'\')">'
+      +       '<div class="doc-toggle-thumb"></div>'
+      +     '</div>'
       +     '<div class="rec-time">'+tp+'</div>'
       +     '<button class="del-btn" onclick="askDeleteRecord('+r.id+',\''+ds+'\',\''+r.studentName+' '+r.type+'\')" title="삭제">✕</button>'
       +   '</div>'
@@ -784,12 +797,6 @@ function renderRecDetail(ds) {
       + (r.period ? '<span class="rtag rt-period">'+r.period+'</span>' : '')
       + '</div>'
       + (r.memo ? '<div class="rec-memo">💬 '+r.memo+'</div>' : '')
-      + '<div class="rec-bottom">'
-      +   '<button class="doc-btn'+(submitted?' submitted':'')
-      +     '" onclick="toggleDoc('+r.id+',\''+ds+'\')">'
-      +     (submitted ? '📄 서류제출 완료' : '📋 서류 미제출')
-      +   '</button>'
-      + '</div>'
       + '</div>';
   });
   el.innerHTML = html;
