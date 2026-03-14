@@ -116,9 +116,9 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 빨간 점 (출결기록) */
 .cal-day.has-rec .day-inner::after {
-  content: ''; width: 4px; height: 4px;
+  content: ''; width: 7px; height: 7px;
   background: #f87171; border-radius: 50%;
-  position: absolute; bottom: 3px; left: 50%;
+  position: absolute; bottom: 1px; left: 50%;
   transform: translateX(-50%);
 }
 .cal-day.picked .day-inner::after { background: rgba(255,255,255,.7) !important; }
@@ -670,6 +670,15 @@ function goTab(t) {
     renderCal();
     renderRecDetail(selCalDate);
   }
+  if (t === 'input') {
+    // 선택된 학생 리셋
+    if (selIdx !== null) {
+      var prev = document.getElementById('st'+selIdx);
+      if (prev) prev.classList.remove('sel');
+      selIdx = null;
+    }
+    resetForm();
+  }
 }
 
 // ── 달력 ──
@@ -786,7 +795,6 @@ function renderRecDetail(ds) {
       +     '<div class="doc-toggle-track'+(submitted?' on':'')+'" onclick="toggleDoc('+r.id+',\''+ds+'\')">'
       +       '<div class="doc-toggle-thumb"></div>'
       +     '</div>'
-      +     '<div class="rec-time">'+tp+'</div>'
       +     '<button class="del-btn" onclick="askDeleteRecord('+r.id+',\''+ds+'\',\''+r.studentName+' '+r.type+'\')" title="삭제">✕</button>'
       +   '</div>'
       + '</div>'
