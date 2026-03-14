@@ -555,14 +555,15 @@ function clearStudents() {
 
 // ── 학생 선택 ──
 function selectSt(i) {
+  // 이전 선택 해제
   if (selIdx !== null) {
     var prev = document.getElementById('st'+selIdx);
     if (prev) prev.classList.remove('sel');
   }
-  if (selIdx === i) { selIdx = null; setBadge(null); resetForm(); return; }
+  // 같은 학생 재클릭해도 선택 유지 (취소 안됨)
   selIdx = i;
-  document.getElementById('st'+i).classList.add('sel');
-  setBadge(i);
+  var cur = document.getElementById('st'+i);
+  if (cur) cur.classList.add('sel');
   resetForm();
 }
 
@@ -605,7 +606,9 @@ function pickMulti(group, value, el) {
 }
 
 // ── 저장 (localStorage) ──
+var _saving = false;
 function doSave() {
+  if (_saving) return;
   if (selIdx === null) { showToast('학생을 선택하세요', 'err'); return; }
 
   // DOM에서 직접 선택된 칩 읽기 (모바일 호환)
@@ -647,10 +650,12 @@ function doSave() {
     memo:        (document.getElementById('memoInput').value || '').trim()
   };
 
+  _saving = true;
   // localStorage에 저장
   var records = lsGet(LS_RECORDS) || [];
   records.push(record);
   var ok = lsSet(LS_RECORDS, records);
+  _saving = false;
 
   if (!ok) { showToast('저장 공간이 부족합니다', 'err'); return; }
 
