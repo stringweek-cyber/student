@@ -58,8 +58,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .chip.on-reason { background: #6366f1; border-color: #6366f1; color: #fff; }
 .chip.on-detail { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 .chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+
+/* 교시 칩: 1줄에 모두 표시 */
 #period-chips { flex-wrap: nowrap; gap: 3px; }
-#period-chips .chip { padding: 9px 6px; font-size: 12px; flex: 1; text-align: center; min-width: 0; }
+#period-chips .chip { padding: 9px 0; font-size: 11px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
+
 #detail-chips { flex-wrap: nowrap; gap: 3px; }
 #detail-chips .chip { padding: 8px 4px; font-size: 12px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
 
@@ -109,7 +112,6 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .doc-toggle-track.on { background: #10b981; }
 .doc-toggle-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: left .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
 .doc-toggle-track.on .doc-toggle-thumb { left: 21px; }
-/* 수정 버튼 */
 .edit-btn { background: none; border: none; cursor: pointer; color: #cbd5e1; padding: 2px; line-height: 1; transition: color .15s; display: flex; align-items: center; }
 .edit-btn:hover { color: #3b82f6; }
 .del-btn { background: none; border: none; cursor: pointer; font-size: 16px; color: #cbd5e1; padding: 0; line-height: 1; transition: color .15s; }
@@ -154,7 +156,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .modal-cancel { background: #f1f5f9; color: #64748b; }
 .modal-confirm { background: #ef4444; color: #fff; }
 
-/* ══ 수정 모달 (하단 시트) ══ */
+/* 수정 모달 (하단 시트) */
 .edit-modal-bg {
   position: fixed; inset: 0; background: rgba(0,0,0,.45);
   z-index: 400; display: none;
@@ -187,8 +189,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 .edit-chip.on-reason { background: #6366f1; border-color: #6366f1; color: #fff; }
 .edit-chip.on-detail { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 .edit-chip.on-period { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+
+/* 수정 모달 교시 칩: 1줄에 모두 표시 */
 .edit-period-row { flex-wrap: nowrap !important; gap: 3px !important; }
-.edit-period-row .edit-chip { padding: 8px 4px; font-size: 12px; flex: 1; text-align: center; min-width: 0; }
+.edit-period-row .edit-chip { padding: 8px 0; font-size: 11px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
+
 .edit-detail-row { flex-wrap: nowrap !important; gap: 3px !important; }
 .edit-detail-row .edit-chip { padding: 8px 4px; font-size: 12px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
 .edit-divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
@@ -297,7 +302,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <div class="grp">
         <div class="glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:13px;">(복수 선택 가능)</span></div>
         <div class="chips" id="period-chips">
-          <div class="chip" id="c-period-조례"  onclick="pickMulti('period','조례',this)">조례</div>
+          <div class="chip" id="c-period-조회"  onclick="pickMulti('period','조회',this)">조회</div>
           <div class="chip" id="c-period-1교시" onclick="pickMulti('period','1교시',this)">1</div>
           <div class="chip" id="c-period-2교시" onclick="pickMulti('period','2교시',this)">2</div>
           <div class="chip" id="c-period-3교시" onclick="pickMulti('period','3교시',this)">3</div>
@@ -305,6 +310,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
           <div class="chip" id="c-period-5교시" onclick="pickMulti('period','5교시',this)">5</div>
           <div class="chip" id="c-period-6교시" onclick="pickMulti('period','6교시',this)">6</div>
           <div class="chip" id="c-period-7교시" onclick="pickMulti('period','7교시',this)">7</div>
+          <div class="chip" id="c-period-종례"  onclick="pickMulti('period','종례',this)">종례</div>
         </div>
       </div>
       <div class="divider"></div>
@@ -389,7 +395,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
   </div>
 </div>
 
-<!-- ══ 수정 모달 (하단 시트) ══ -->
+<!-- 수정 모달 (하단 시트) -->
 <div class="edit-modal-bg" id="editModalBg" onclick="editBgClick(event)">
   <div class="edit-modal" id="editModalInner">
     <div class="edit-handle"></div>
@@ -433,7 +439,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
     <div class="edit-grp">
       <div class="edit-glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:12px;">(복수 선택)</span></div>
       <div class="edit-chips edit-period-row" id="edit-period-chips">
-        <div class="edit-chip" id="ec-period-조례"  onclick="editPickMulti('조례',this)">조례</div>
+        <div class="edit-chip" id="ec-period-조회"  onclick="editPickMulti('조회',this)">조회</div>
         <div class="edit-chip" id="ec-period-1교시" onclick="editPickMulti('1교시',this)">1</div>
         <div class="edit-chip" id="ec-period-2교시" onclick="editPickMulti('2교시',this)">2</div>
         <div class="edit-chip" id="ec-period-3교시" onclick="editPickMulti('3교시',this)">3</div>
@@ -441,6 +447,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
         <div class="edit-chip" id="ec-period-5교시" onclick="editPickMulti('5교시',this)">5</div>
         <div class="edit-chip" id="ec-period-6교시" onclick="editPickMulti('6교시',this)">6</div>
         <div class="edit-chip" id="ec-period-7교시" onclick="editPickMulti('7교시',this)">7</div>
+        <div class="edit-chip" id="ec-period-종례"  onclick="editPickMulti('종례',this)">종례</div>
       </div>
     </div>
 
@@ -467,14 +474,14 @@ var chosen   = { type:'', reason:'', detail:'', period:[] };
 var calYear, calMonth, selCalDate = null;
 var pendingAction = null;
 
-var PERIOD_VALS   = ['조례','1교시','2교시','3교시','4교시','5교시','6교시','7교시'];
+/* ▼ 조례 → 조회, 종례 추가 */
+var PERIOD_VALS   = ['조회','1교시','2교시','3교시','4교시','5교시','6교시','7교시','종례'];
 var SINGLE_GROUPS = {
   type:   ['결석','조퇴','지각','결과'],
   reason: ['인정','미인정','질병','기타'],
   detail: ['체험학습','독감','생리결석','운동부','경조사']
 };
 
-// 수정 모달 상태
 var editState = { id:null, dateStr:null, type:'', reason:'', detail:'', period:[] };
 
 function lsGet(k) { try { var v=localStorage.getItem(k); return v?JSON.parse(v):null; } catch(e){return null;} }
@@ -607,19 +614,20 @@ function goTab(t){
 }
 
 function ym(){ return calYear+'-'+pad(calMonth+1); }
-function getRecordDatesInMonth(ym){ var r=lsGet(LS_RECORDS)||{}, d={}; (lsGet(LS_RECORDS)||[]).forEach(function(rec){if(rec.date&&rec.date.startsWith(ym))d[rec.date]=true;}); return Object.keys(d); }
 function getRecordsByDate(ds){ return (lsGet(LS_RECORDS)||[]).filter(function(r){return r.date===ds;}).sort(function(a,b){return (parseInt(a.studentNum)||0)-(parseInt(b.studentNum)||0);}); }
 
 function renderCal(){ document.getElementById('calTitle').textContent=calYear+'년 '+(calMonth+1)+'월'; buildCalGrid(); }
 function buildCalGrid(){
-  var today=new Date(), recDates=getRecordDatesInMonth(ym()), docs=lsGet(LS_DOCS)||{};
+  var today=new Date(), ymStr=ym(), docs=lsGet(LS_DOCS)||{};
+  var recDates={};
+  (lsGet(LS_RECORDS)||[]).forEach(function(rec){if(rec.date&&rec.date.startsWith(ymStr))recDates[rec.date]=true;});
   var firstDay=new Date(calYear,calMonth,1).getDay(), lastDate=new Date(calYear,calMonth+1,0).getDate(), html='';
   for(var i=0;i<firstDay;i++)html+='<div class="cal-day empty"></div>';
   for(var d=1;d<=lastDate;d++){
     var ds=calYear+'-'+pad(calMonth+1)+'-'+pad(d);
     var dow=(firstDay+d-1)%7;
     var isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
-    var isPicked=selCalDate===ds, hasRec=recDates.indexOf(ds)>-1;
+    var isPicked=selCalDate===ds, hasRec=!!recDates[ds];
     var cls='cal-day'+(dow===0?' sun':'')+(dow===6?' sat':'')+(isToday?' today':'')+(isPicked?' picked':'')+(hasRec?' has-rec':'');
     var ringHtml='';
     if(hasRec){
@@ -654,7 +662,6 @@ function renderRecDetail(ds){
       +'<div class="doc-toggle-track'+(submitted?' on':'')+'" onclick="toggleDoc('+r.id+',\''+ds+'\')">'
       +'<div class="doc-toggle-thumb"></div>'
       +'</div>'
-      /* ── 수정 버튼 ── */
       +'<button class="edit-btn" onclick="openEditModal('+r.id+',\''+ds+'\')" title="수정">'
       +'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
       +'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>'
@@ -720,9 +727,7 @@ function confirmAction(){
   }
 }
 
-// ══════════════════════════════════
 // 수정 모달
-// ══════════════════════════════════
 var EDIT_SINGLE={
   type:  ['결석','조퇴','지각','결과'],
   reason:['인정','미인정','질병','기타'],
@@ -742,7 +747,6 @@ function openEditModal(id, dateStr){
 
   document.getElementById('editModalWho').textContent=rec.studentNum+'번 '+rec.studentName;
 
-  // 칩 초기화
   Object.keys(EDIT_SINGLE).forEach(function(g){
     EDIT_SINGLE[g].forEach(function(v){
       var e=document.getElementById('ec-'+g+'-'+v);
@@ -759,7 +763,6 @@ function openEditModal(id, dateStr){
 }
 
 function editBgClick(e){
-  // 배경(어두운 영역) 클릭 시에만 닫기
   if(e.target===document.getElementById('editModalBg')) closeEditModal();
 }
 function closeEditModal(){
@@ -835,7 +838,6 @@ function showToast(msg,type){
     if(!drag)return;drag=false;
     var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
     if(Math.abs(dx)<50||Math.abs(dy)>Math.abs(dx))return;
-    // 수정 모달이 열려있으면 스와이프 무시
     if(document.getElementById('editModalBg').classList.contains('show'))return;
     var cur=tabs.indexOf(document.querySelector('.tab.on')?document.querySelector('.tab.on').id.replace('tab-',''):'input');
     if(dx<0&&cur<tabs.length-1)goTab(tabs[cur+1]);
