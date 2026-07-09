@@ -67,6 +67,12 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 #detail-chips .chip { padding: 8px 4px; font-size: 12px; flex: 1; text-align: center; min-width: 0; white-space: nowrap; letter-spacing: -0.5px; }
 
 .divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
+
+/* 메모 빠른입력 버튼 */
+.memo-quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.memo-quick-chip { padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
+.memo-quick-chip:active { transform: scale(.91); background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
+
 .memo-box { width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #1e293b; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; padding: 9px 11px; resize: none; height: 70px; outline: none; }
 .memo-box:focus { border-color: #3b82f6; background: #fff; }
 .memo-box::placeholder { color: #cbd5e1; }
@@ -101,7 +107,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 /* 기록 카드 */
 .rec-detail { margin-top: 14px; }
-.rec-date-title { font-size: 15px; font-weight: 700; color: #475569; margin-bottom: 10px; }
+.rec-date-title { font-size: 22px; font-weight: 800; color: #ef4444; margin-bottom: 10px; }
 .rec-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 13px; margin-bottom: 10px; }
 .rec-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .rec-name { font-size: 17px; font-weight: 700; }
@@ -283,18 +289,18 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <div class="grp">
         <div class="glabel">사유</div>
         <div class="chips">
+          <div class="chip" id="c-reason-질병"   onclick="pickSingle('reason','질병',this)">질병</div>
           <div class="chip" id="c-reason-인정"   onclick="pickSingle('reason','인정',this)">인정</div>
           <div class="chip" id="c-reason-미인정" onclick="pickSingle('reason','미인정',this)">미인정</div>
-          <div class="chip" id="c-reason-질병"   onclick="pickSingle('reason','질병',this)">질병</div>
           <div class="chip" id="c-reason-기타"   onclick="pickSingle('reason','기타',this)">기타</div>
         </div>
       </div>
       <div class="grp">
         <div class="glabel">상세</div>
         <div class="chips" id="detail-chips">
+          <div class="chip" id="c-detail-생리결석" onclick="pickSingle('detail','생리결석',this)">생리결석</div>
           <div class="chip" id="c-detail-체험학습" onclick="pickSingle('detail','체험학습',this)">체험학습</div>
           <div class="chip" id="c-detail-독감"    onclick="pickSingle('detail','독감',this)">독감</div>
-          <div class="chip" id="c-detail-생리결석" onclick="pickSingle('detail','생리결석',this)">생리결석</div>
           <div class="chip" id="c-detail-운동부"  onclick="pickSingle('detail','운동부',this)">운동부</div>
           <div class="chip" id="c-detail-경조사"  onclick="pickSingle('detail','경조사',this)">경조사</div>
         </div>
@@ -316,6 +322,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <div class="divider"></div>
       <div class="grp">
         <div class="glabel">메모</div>
+        <div class="memo-quick-chips">
+          <div class="memo-quick-chip" onclick="fillMemo('감기')">감기</div>
+          <div class="memo-quick-chip" onclick="fillMemo('두통')">두통</div>
+          <div class="memo-quick-chip" onclick="fillMemo('복통')">복통</div>
+        </div>
         <textarea class="memo-box" id="memoInput" placeholder="추가 메모를 입력하세요."></textarea>
       </div>
       <button class="save-btn" onclick="doSave()">저장하기</button>
@@ -564,6 +575,9 @@ function pickSingle(group,value,el){
 function pickMulti(group,value,el){
   var arr=chosen[group], idx=arr.indexOf(value);
   if(idx>-1){arr.splice(idx,1);el.className='chip';}else{arr.push(value);el.className='chip on-'+group;}
+}
+function fillMemo(text){
+  document.getElementById('memoInput').value=text;
 }
 
 var _saving=false;
