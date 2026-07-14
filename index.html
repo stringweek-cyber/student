@@ -51,6 +51,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
 .grp { margin-bottom: 13px; }
 .glabel { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+.period-clear-btn { margin-left: auto; padding: 3px 10px; border-radius: 12px; border: 1.5px solid #60a5fa; background: #bfdbfe; color: #1d4ed8; font-size: 11px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; white-space: nowrap; }
+.period-clear-btn:active { background: #eff6ff; color: #3b82f6; border-color: #3b82f6; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { padding: 10px 20px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-family: 'Noto Sans KR', sans-serif; transition: all .14s; user-select: none; }
 .chip:active { transform: scale(.91); }
@@ -306,7 +308,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
         </div>
       </div>
       <div class="grp">
-        <div class="glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:13px;">(복수 선택 가능)</span></div>
+        <div class="glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:12px;">(지각은 이전, 조퇴는 이후 자동클릭)</span><button type="button" class="period-clear-btn" onclick="clearPeriod()">깨끗이</button></div>
         <div class="chips" id="period-chips">
           <div class="chip" id="c-period-조회"  onclick="pickMulti('period','조회',this)">조회</div>
           <div class="chip" id="c-period-1교시" onclick="pickMulti('period','1교시',this)">1</div>
@@ -446,7 +448,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
     </div>
 
     <div class="edit-grp">
-      <div class="edit-glabel">교시 <span style="color:#94a3b8;font-weight:500;font-size:12px;">(복수 선택)</span></div>
+      <div class="edit-glabel" style="display:flex;align-items:center;gap:6px;">교시 <span style="color:#94a3b8;font-weight:500;font-size:11px;">(지각은 이전, 조퇴는 이후 자동클릭)</span><button type="button" class="period-clear-btn" onclick="clearEditPeriod()">깨끗이</button></div>
       <div class="edit-chips edit-period-row" id="edit-period-chips">
         <div class="edit-chip" id="ec-period-조회"  onclick="editPickMulti('조회',this)">조회</div>
         <div class="edit-chip" id="ec-period-1교시" onclick="editPickMulti('1교시',this)">1</div>
@@ -576,8 +578,22 @@ function pickSingle(group,value,el){
   el.className='chip on-'+group; chosen[group]=value;
 }
 function pickMulti(group,value,el){
+  if(group==='period'&&(chosen.type==='조퇴'||chosen.type==='지각')){
+    var vIdx=PERIOD_VALS.indexOf(value);
+    var newArr = chosen.type==='조퇴' ? PERIOD_VALS.slice(vIdx) : PERIOD_VALS.slice(0,vIdx+1);
+    chosen.period=newArr;
+    PERIOD_VALS.forEach(function(v){
+      var c=document.getElementById('c-period-'+v);
+      if(c) c.className='chip'+(newArr.indexOf(v)>-1?' on-period':'');
+    });
+    return;
+  }
   var arr=chosen[group], idx=arr.indexOf(value);
   if(idx>-1){arr.splice(idx,1);el.className='chip';}else{arr.push(value);el.className='chip on-'+group;}
+}
+function clearPeriod(){
+  chosen.period=[];
+  PERIOD_VALS.forEach(function(v){var c=document.getElementById('c-period-'+v);if(c)c.className='chip';});
 }
 function fillMemo(text){
   document.getElementById('memoInput').value=text;
@@ -801,9 +817,23 @@ function editPickSingle(group, value, el){
   editState[group]=value;
 }
 function editPickMulti(value, el){
+  if(editState.type==='조퇴'||editState.type==='지각'){
+    var vIdx=PERIOD_VALS.indexOf(value);
+    var newArr = editState.type==='조퇴' ? PERIOD_VALS.slice(vIdx) : PERIOD_VALS.slice(0,vIdx+1);
+    editState.period=newArr;
+    PERIOD_VALS.forEach(function(v){
+      var c=document.getElementById('ec-period-'+v);
+      if(c) c.className='edit-chip'+(newArr.indexOf(v)>-1?' on-period':'');
+    });
+    return;
+  }
   var arr=editState.period, idx=arr.indexOf(value);
   if(idx>-1){arr.splice(idx,1);el.className='edit-chip';}
   else{arr.push(value);el.className='edit-chip on-period';}
+}
+function clearEditPeriod(){
+  editState.period=[];
+  PERIOD_VALS.forEach(function(v){var c=document.getElementById('ec-period-'+v);if(c)c.className='edit-chip';});
 }
 
 function doEditSave(){
