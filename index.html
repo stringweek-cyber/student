@@ -364,9 +364,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
       <h3>👨‍🎓 학생 명단</h3>
       <p>엑셀에서 번호·이름 두 열을 선택해 복사(Ctrl+C)한 후 아래에 붙여넣기 하세요.</p>
       <textarea class="paste-area" id="pasteArea" placeholder="예시:
-1	김민준
-2	이서연
-3	박지호
+1	홍길동
 ..."></textarea>
       <div id="studentCountBadge"></div>
       <div class="settings-btn-row">
@@ -466,6 +464,11 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 
     <div class="edit-grp">
       <div class="edit-glabel">메모</div>
+      <div class="memo-quick-chips">
+        <div class="memo-quick-chip" onclick="fillEditMemo('감기')">감기</div>
+        <div class="memo-quick-chip" onclick="fillEditMemo('두통')">두통</div>
+        <div class="memo-quick-chip" onclick="fillEditMemo('복통')">복통</div>
+      </div>
       <textarea class="edit-memo-box" id="editMemoInput" placeholder="추가 메모를 입력하세요."></textarea>
     </div>
 
@@ -578,6 +581,10 @@ function pickMulti(group,value,el){
 }
 function fillMemo(text){
   document.getElementById('memoInput').value=text;
+}
+
+function fillEditMemo(text){
+  document.getElementById('editMemoInput').value=text;
 }
 
 var _saving=false;
