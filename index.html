@@ -546,9 +546,15 @@ function applyStudents(){
   var lines=raw.split('\n'), parsed=[];
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim(); if(!line)continue;
-    var p=line.split('\t'); if(p.length<2)p=line.split(/\s+/); if(p.length<2)continue;
-    var num=p[0].trim(), name=p.slice(1).join(' ').trim();
-    if(num&&name)parsed.push({num:num,name:name});
+    var num,name;
+    var p=line.split('\t');
+    if(p.length<2)p=line.split(/\s+/);
+    if(p.length>=2){ num=p[0].trim(); name=p.slice(1).join(' ').trim(); }
+    else {
+      var m=line.match(/^(\d+)\s*(.+)$/);
+      if(m){ num=m[1]; name=m[2].trim(); } else { num=''; name=line; }
+    }
+    if(name)parsed.push({num:num,name:name});
   }
   if(!parsed.length){showToast('인식된 학생이 없습니다.','err');return;}
   students=parsed; lsSet(LS_STUDENTS,students);
