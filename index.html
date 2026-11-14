@@ -379,7 +379,13 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
     <div class="settings-section">
       <h3>💾 데이터 관리</h3>
       <p>출결 데이터는 이 기기 브라우저에 저장됩니다.<br>브라우저 데이터 삭제 시 함께 지워질 수 있습니다.</p>
-      <button class="data-btn" onclick="exportCSV()">출결 데이터 CSV로 내보내기</button>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <input type="password" id="csvPw" placeholder="CSV 비밀번호 (비우면 암호화 안 함)" autocomplete="new-password" style="flex:1;min-width:0;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:'Noto Sans KR',sans-serif;">
+        <button type="button" class="btn-primary" style="width:auto;padding:0 14px;" onclick="saveCsvPw()">저장</button>
+      </div>
+      <p id="csvPwState" style="font-size:12px;margin:0 0 8px;"></p>
+      <select id="exportMonth" style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:'Noto Sans KR',sans-serif;margin-bottom:8px;background:#fff;color:#334155;"></select>
+      <button class="data-btn" onclick="exportCSV()">선택한 달 CSV로 내보내기</button>
       <button class="data-btn" onclick="askClearAllRecords()">출결 기록 전체 삭제</button>
     </div>
   </div>
@@ -487,6 +493,7 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
 var LS_STUDENTS = 'chulgyul_students';
 var LS_RECORDS  = 'chulgyul_records';
 var LS_DOCS     = 'chulgyul_docs';
+var LS_CSVPW    = 'chulgyul_csv_pw';
 
 var students = [], selIdx = null;
 var chosen   = { type:'', reason:'', detail:'', period:[] };
@@ -539,6 +546,7 @@ function updateStudentCountBadge(){
 }
 function openSettings(){
   if(students.length) document.getElementById('pasteArea').value=students.map(function(s){return s.num+'\t'+s.name;}).join('\n');
+  fillExportMonths(); showCsvPwState();
   document.getElementById('settingsOverlay').classList.add('show');
   document.getElementById('settingsPanel').classList.add('show');
 }
@@ -892,18 +900,62 @@ function doEditSave(){
 }
 
 // CSV
-function exportCSV(){
-  var records=lsGet(LS_RECORDS)||[];
-  if(!records.length){showToast('저장된 기록이 없습니다.','err');return;}
+function showCsvPwState(){
+  var pw=localStorage.getItem(LS_CSVPW)||'', el=document.getElementById('csvPwState');
+  document.getElementById('csvPw').value='';
+  if(el){ el.textContent = pw ? '🔒 비밀번호 설정됨 · 내보내기 파일이 자동으로 암호화됩니다' : '🔓 비밀번호 없음 · 일반 CSV로 내보냅니다'; el.style.color = pw ? '#16a34a' : '#94a3b8'; }
+}
+function saveCsvPw(){
+  var v=document.getElementById('csvPw').value;
+  try{ if(v) localStorage.setItem(LS_CSVPW,v); else localStorage.removeItem(LS_CSVPW); }catch(e){}
+  showCsvPwState();
+  showToast(v?'🔒 CSV 비밀번호를 저장했어요':'CSV 비밀번호를 해제했어요','ok');
+}
+function b64(u8){ var s='',i,CH=0x8000; for(i=0;i<u8.length;i+=CH) s+=String.fromCharCode.apply(null,u8.subarray(i,i+CH)); return btoa(s); }
+async function encryptText(text,pw){
+  var enc=new TextEncoder(), salt=crypto.getRandomValues(new Uint8Array(16)), iv=crypto.getRandomValues(new Uint8Array(12));
+  var base=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt']);
+  var ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,enc.encode(text)));
+  var all=new Uint8Array(28+ct.length); all.set(salt,0); all.set(iv,16); all.set(ct,28);
+  return 'NEISATT1\n'+b64(all);
+}
+function fillExportMonths(){
+  var sel=document.getElementById('exportMonth'); if(!sel)return;
+  var keep=sel.value, seen={};
+  (lsGet(LS_RECORDS)||[]).forEach(function(r){ if(r.date&&r.date.length>=7) seen[r.date.slice(0,7)]=true; });
+  var ms=Object.keys(seen).sort().reverse();
+  var cur=todayStr().slice(0,7);
+  var h='';
+  ms.forEach(function(m){ h+='<option value="'+m+'">'+m.slice(0,4)+'년 '+parseInt(m.slice(5,7),10)+'월</option>'; });
+  h+='<option value="all">전체 기간</option>';
+  sel.innerHTML=h;
+  if(keep&&(keep==='all'||seen[keep])) sel.value=keep;
+  else if(seen[cur]) sel.value=cur;
+  else if(ms.length) sel.value=ms[0];
+  else sel.value='all';
+}
+async function exportCSV(){
+  var sel=document.getElementById('exportMonth');
+  var month=sel?sel.value:'all';
+  var records=(lsGet(LS_RECORDS)||[]).filter(function(r){ return month==='all' || (r.date&&r.date.slice(0,7)===month); });
+  records.sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:((parseInt(a.studentNum)||0)-(parseInt(b.studentNum)||0)); });
+  if(!records.length){showToast(month==='all'?'저장된 기록이 없습니다.':'이 달에는 기록이 없습니다.','err');return;}
   var header=['기록일시','날짜','학생번호','학생이름','출결유형','출결사유','출결상세','교시','메모'];
   var rows=[header.join(',')];
   records.forEach(function(r){rows.push([r.time,r.date,r.studentNum,r.studentName,r.type,r.reason,r.detail,r.period,'"'+(r.memo||'').replace(/"/g,'""')+'"'].join(','));});
   var csv='\uFEFF'+rows.join('\n');
-  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var pw=''; try{ pw=localStorage.getItem(LS_CSVPW)||''; }catch(e){}
+  var ext='.csv', mime='text/csv;charset=utf-8;';
+  if(pw){
+    if(!(window.crypto&&crypto.subtle)){showToast('이 브라우저에서는 암호화할 수 없어요','err');return;}
+    csv=await encryptText(rows.join('\n'),pw); ext='.enc'; mime='application/octet-stream';
+  }
+  var blob=new Blob([csv],{type:mime});
   var url=URL.createObjectURL(blob);
-  var a=document.createElement('a'); a.href=url; a.download='출결기록_'+todayStr()+'.csv';
+  var a=document.createElement('a'); a.href=url; a.download='출결기록_'+(month==='all'?'전체_'+todayStr():month)+ext;
   document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-  showToast('CSV 다운로드 완료!','ok');
+  showToast((month==='all'?'전체':parseInt(month.slice(5,7),10)+'월')+' '+records.length+'건 '+(pw?'🔒 암호화 파일':'CSV')+' 다운로드 완료!','ok');
 }
 
 function showToast(msg,type){
