@@ -379,14 +379,8 @@ body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; color: #1e2
     <div class="settings-section">
       <h3>💾 데이터 관리</h3>
       <p>출결 데이터는 이 기기 브라우저에 저장됩니다.<br>브라우저 데이터 삭제 시 함께 지워질 수 있습니다.</p>
-      <div style="display:flex;gap:6px;margin-bottom:8px;">
-        <input type="password" id="csvPw" placeholder="CSV 비밀번호 (비우면 암호화 안 함)" autocomplete="new-password" style="flex:1;min-width:0;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:'Noto Sans KR',sans-serif;">
-        <button type="button" class="btn-primary" style="width:auto;padding:0 14px;" onclick="saveCsvPw()">저장</button>
-      </div>
-      <p id="csvPwState" style="font-size:12px;margin:0 0 8px;"></p>
       <select id="exportMonth" style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:'Noto Sans KR',sans-serif;margin-bottom:8px;background:#fff;color:#334155;"></select>
-      <button class="data-btn" onclick="exportCSV()">선택한 달 CSV로 내보내기</button>
-      <button class="data-btn" onclick="askClearAllRecords()">출결 기록 전체 삭제</button>
+      <button class="data-btn" onclick="askExportPw()">선택한 달 CSV로 내보내기</button>
     </div>
   </div>
 </div>
@@ -546,7 +540,7 @@ function updateStudentCountBadge(){
 }
 function openSettings(){
   if(students.length) document.getElementById('pasteArea').value=students.map(function(s){return s.num+'\t'+s.name;}).join('\n');
-  fillExportMonths(); showCsvPwState();
+  fillExportMonths();
   document.getElementById('settingsOverlay').classList.add('show');
   document.getElementById('settingsPanel').classList.add('show');
 }
@@ -900,17 +894,7 @@ function doEditSave(){
 }
 
 // CSV
-function showCsvPwState(){
-  var pw=localStorage.getItem(LS_CSVPW)||'', el=document.getElementById('csvPwState');
-  document.getElementById('csvPw').value='';
-  if(el){ el.textContent = pw ? '🔒 비밀번호 설정됨 · 내보내기 파일이 자동으로 암호화됩니다' : '🔓 비밀번호 없음 · 일반 CSV로 내보냅니다'; el.style.color = pw ? '#16a34a' : '#94a3b8'; }
-}
-function saveCsvPw(){
-  var v=document.getElementById('csvPw').value;
-  try{ if(v) localStorage.setItem(LS_CSVPW,v); else localStorage.removeItem(LS_CSVPW); }catch(e){}
-  showCsvPwState();
-  showToast(v?'🔒 CSV 비밀번호를 저장했어요':'CSV 비밀번호를 해제했어요','ok');
-}
+try{ localStorage.removeItem(LS_CSVPW); }catch(e){}
 function b64(u8){ var s='',i,CH=0x8000; for(i=0;i<u8.length;i+=CH) s+=String.fromCharCode.apply(null,u8.subarray(i,i+CH)); return btoa(s); }
 async function encryptText(text,pw){
   var enc=new TextEncoder(), salt=crypto.getRandomValues(new Uint8Array(16)), iv=crypto.getRandomValues(new Uint8Array(12));
@@ -935,7 +919,35 @@ function fillExportMonths(){
   else if(ms.length) sel.value=ms[0];
   else sel.value='all';
 }
-async function exportCSV(){
+function askExportPw(){
+  var sel=document.getElementById('exportMonth'), month=sel?sel.value:'all';
+  var n=(lsGet(LS_RECORDS)||[]).filter(function(r){ return month==='all' || (r.date&&r.date.slice(0,7)===month); }).length;
+  if(!n){showToast(month==='all'?'저장된 기록이 없습니다.':'이 달에는 기록이 없습니다.','err');return;}
+  var old=document.getElementById('exportSheetBg'); if(old) old.remove();
+  var bg=document.createElement('div'); bg.id='exportSheetBg'; bg.className='modal-bg'; bg.style.display='flex';
+  var inp='width:100%;box-sizing:border-box;padding:12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;margin-top:8px;font-family:inherit;';
+  var btn='display:block;width:100%;padding:13px;border-radius:10px;font-size:15px;font-weight:700;margin-top:8px;font-family:inherit;cursor:pointer;';
+  bg.innerHTML='<div class="modal"><h3>🔒 비밀번호</h3>'
+    +'<p style="margin:0;color:#64748b;font-size:13px;">'+(month==='all'?'전체 기간':parseInt(month.slice(5,7),10)+'월')+' '+n+'건</p>'
+    +'<input type="password" id="exPw1" placeholder="비밀번호" autocomplete="off" style="'+inp+'">'
+    +'<input type="password" id="exPw2" placeholder="비밀번호 확인" autocomplete="off" style="'+inp+'">'
+    +'<button id="exGo" style="'+btn+'border:0;background:#2563eb;color:#fff;">내보내기</button>'
+    +'<button id="exCancel" style="'+btn+'border:0;background:#f1f5f9;color:#475569;">취소</button></div>';
+  document.body.appendChild(bg);
+  var p1=document.getElementById('exPw1'), p2=document.getElementById('exPw2');
+  setTimeout(function(){p1.focus();},50);
+  document.getElementById('exCancel').onclick=function(){ bg.remove(); };
+  var go=function(){
+    var a=p1.value, b=p2.value;
+    if(a.length<4){showToast('비밀번호를 4자 이상 입력하세요','err');p1.focus();return;}
+    if(a!==b){showToast('비밀번호가 서로 달라요','err');p2.value='';p2.focus();return;}
+    p1.value=''; p2.value='';
+    exportCSV(a);
+  };
+  document.getElementById('exGo').onclick=go;
+  p2.addEventListener('keydown',function(e){ if(e.key==='Enter') go(); });
+}
+async function exportCSV(pw){
   var sel=document.getElementById('exportMonth');
   var month=sel?sel.value:'all';
   var records=(lsGet(LS_RECORDS)||[]).filter(function(r){ return month==='all' || (r.date&&r.date.slice(0,7)===month); });
@@ -945,7 +957,7 @@ async function exportCSV(){
   var rows=[header.join(',')];
   records.forEach(function(r){rows.push([r.time,r.date,r.studentNum,r.studentName,r.type,r.reason,r.detail,r.period,'"'+(r.memo||'').replace(/"/g,'""')+'"'].join(','));});
   var csv='\uFEFF'+rows.join('\n');
-  var pw=''; try{ pw=localStorage.getItem(LS_CSVPW)||''; }catch(e){}
+  pw=pw||'';
   var ext='.csv', mime='text/csv;charset=utf-8;';
   if(pw){
     if(!(window.crypto&&crypto.subtle)){showToast('이 브라우저에서는 암호화할 수 없어요','err');return;}
