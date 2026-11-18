@@ -955,7 +955,8 @@ async function exportCSV(pw){
   if(!records.length){showToast(month==='all'?'저장된 기록이 없습니다.':'이 달에는 기록이 없습니다.','err');return;}
   var header=['기록일시','날짜','학생번호','학생이름','출결유형','출결사유','출결상세','교시','메모'];
   var rows=[header.join(',')];
-  records.forEach(function(r){rows.push([r.time,r.date,r.studentNum,r.studentName,r.type,r.reason,r.detail,r.period,'"'+(r.memo||'').replace(/"/g,'""')+'"'].join(','));});
+  var q=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
+  records.forEach(function(r){rows.push([r.time,r.date,r.studentNum,r.studentName,r.type,r.reason,r.detail,r.period,r.memo||''].map(q).join(','));});
   var csv='\uFEFF'+rows.join('\n');
   pw=pw||'';
   var ext='.csv', mime='text/csv;charset=utf-8;';
